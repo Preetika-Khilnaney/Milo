@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Milo — AI checkout agent for PayPal + PYUSD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="milo-icon.png" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img class="logo" src="milo-icon.png" alt="Milo logo" />
+      <div>
+        <div class="brand-name">Milo</div>
+        <div class="brand-sub">Your AI checkout agent · PayPal + PYUSD</div>
+      </div>
+    </div>
+    <div class="badges" id="badges"></div>
+    <button class="ghost" id="resetBtn" title="Reset demo state">Reset demo</button>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: wallet + value -->
+    <aside class="col left">
+      <section class="card wallet">
+        <div class="card-title">Wallet</div>
+        <div class="balance-main">
+          <span class="label">PYUSD balance</span>
+          <span class="amount" id="pyusdBal">—</span>
+        </div>
+        <div class="balance-row"><span>Idle PayPal balance</span><b id="ppBal">—</b></div>
+        <div class="balance-row"><span>Locked in escrow</span><b id="escrowBal">—</b></div>
+        <div class="balance-row"><span>Cashback earned</span><b class="pos" id="cashBal">—</b></div>
+        <div class="topup">
+          <div class="topup-row">
+            <input type="number" id="topupAmt" value="100" min="1" max="2000" />
+            <button id="topupBtn">Buy PYUSD with PayPal</button>
+          </div>
+          <div id="topupPaypal"></div>
+        </div>
+      </section>
+
+      <section class="card nudge hidden" id="nudge"></section>
+
+      <section class="card">
+        <div class="card-title">Value created</div>
+        <div class="value-grid">
+          <div class="value-col">
+            <div class="value-head user">For the user</div>
+            <div class="vrow"><span>Cashback</span><b id="vCash">$0</b></div>
+            <div class="vrow"><span>Claims auto-resolved</span><b id="vClaims">0</b></div>
+          </div>
+          <div class="value-col">
+            <div class="value-head pp">For PayPal</div>
+            <div class="vrow"><span>Funding cost saved</span><b id="vFund">$0</b></div>
+            <div class="vrow"><span>Exp. dispute cost avoided</span><b id="vDisp">$0</b></div>
+            <div class="vrow"><span>Balance retained</span><b id="vRet">$0</b></div>
+          </div>
+        </div>
+        <div class="fine">Cost figures are illustrative estimates (configurable in .env).</div>
+      </section>
+
+      <section class="card activity-card">
+        <div class="card-title">Activity</div>
+        <ul class="activity" id="activity"></ul>
+      </section>
+    </aside>
+
+    <!-- CENTER: agent chat -->
+    <section class="col center">
+      <div class="card chat">
+        <div class="chat-head">
+          <div>
+            <div class="card-title">Milo · checkout agent</div>
+            <div class="muted small">Tell me what you want to buy. I'll find it, check the merchant, and pick the safest, cheapest way to pay.</div>
+          </div>
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="suggestions" id="suggestions">
+          <button>Find noise cancelling headphones under $150</button>
+          <button>I need a 4K monitor</button>
+          <button>Buy a pour-over coffee set</button>
+          <button>How can I earn on my idle balance?</button>
+        </div>
+        <form class="composer" id="composer">
+          <input id="input" autocomplete="off" placeholder="e.g. Get me a mechanical keyboard, budget $100" />
+          <button type="submit" id="sendBtn">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- RIGHT: orders -->
+    <aside class="col right">
+      <section class="card orders-card">
+        <div class="card-title">Orders <span class="muted small">· demo controls simulate the carrier and buyer</span></div>
+        <div id="orders" class="orders"><div class="empty">No orders yet. Ask the agent to buy something.</div></div>
+      </section>
+    </aside>
+  </main>
+
+  <input type="file" id="photoInput" accept="image/*" hidden />
+  <script src="app.js"></script>
+</body>
+</html>
